@@ -1,5 +1,6 @@
 #include <time.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 const int ENA = 7;
 const int IN1 = 6;
@@ -11,19 +12,25 @@ const int DRIVE_OUT_DURATION = 24000;
 // Ungefaehr die dauer wie lang der motor zum einfahren braucht
 const int DRIVE_IN_DURATION = 32000;
 
-int durationIndex = 0;
-int durations[] = { 1000, 10000, 3000, 1000, 5000, 2000, 5000, 1000 };
-int durationsLen = sizeof durations / sizeof durations[0];
-int getNextDuration() {
-  if (durationIndex == durationsLen - 1) {
-    durationIndex = 0;
+// Nach dem motor stop dauer
+int afterStopDurations[] = { 1000, 1000, 5000, 2000, 5000, 1000, };
+
+
+int afterStopDurationsLen = sizeof afterStopDurations / sizeof afterStopDurations[0];
+int afterStopIndex = -1;
+
+int getNextDuration(int *index, int durations[], int len) {
+  if (*index >= len - 1) {
+    *index = 0;
+  } else {
+    *index = *index + 1;
   }
-  durationIndex++;
-  return durations[durationIndex];
+
+  return durations[*index];
 }
 
 void setup() {
-  Serial.begin(9600);      // Tells the arduin to print the output to the
+  Serial.begin(9600); // Tells the arduin to print the output to the
 
   pinMode(ENA, OUTPUT);
   pinMode(IN1, OUTPUT);
@@ -54,7 +61,6 @@ void driveInManual() {
   exit(0);
 }
 
-
 void loop() {
   // Starting the program, driving in the motor
   driveIn();
@@ -67,7 +73,7 @@ void loop() {
 
     // Wait some time before going over the limit
     stopDrive();
-    delay(getNextDuration());
+    delay(getNextDuration(&afterStopIndex, afterStopDurations, afterStopDurationsLen));
 
     // Start driving out again over the limit
     driveOut();
