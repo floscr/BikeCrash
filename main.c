@@ -6,18 +6,23 @@ const int ENA = 7;
 const int IN1 = 6;
 const int IN2 = 5;
 
-// Ungefaehr die dauer wie lang der motor zum ausfahrent braucht vor dem aushaehngemechanismus
-const int DRIVE_OUT_DURATION = 24000;
-
 // Ungefaehr die dauer wie lang der motor zum einfahren braucht
 const int DRIVE_IN_DURATION = 32000;
 
-// Nach dem motor stop dauer
+// Time out before the crash
 int afterStopDurations[] = { 1000, 1000, 5000, 2000, 5000, 1000, };
-
-
 int afterStopDurationsLen = sizeof afterStopDurations / sizeof afterStopDurations[0];
 int afterStopIndex = -1;
+
+// Time out after the crash
+int afterCrashDurations[] = { 1000, 1000, 5000, 2000, 5000, 1000, };
+int afterCrashDurationsLen = sizeof afterCrashDurations / sizeof afterCrashDurations[0];
+int afterCrashIndex = -1;
+
+// Time out before driving out motor again
+int afterStartDurations[] = { 1000, 1000, 5000, 2000, 5000, 1000, };
+int afterStartDurationsLen = sizeof afterStartDurations / sizeof afterStartDurations[0];
+int afterStartIndex = -1;
 
 int getNextDuration(int *index, int durations[], int len) {
   if (*index >= len - 1) {
@@ -69,7 +74,7 @@ void loop() {
   // Starting the interval
   while (true) {
     driveOut();
-    delay(DRIVE_OUT_DURATION);
+    delay(getNextDuration(&afterStartIndex, afterStartDurations, afterStartDurationsLen));
 
     // Wait some time before going over the limit
     stopDrive();
@@ -80,7 +85,7 @@ void loop() {
     delay(6000);
 
     // wait some time to drive in the moter
-    delay(20000);
+    delay(getNextDuration(&afterCrashIndex, afterCrashDurations, afterCrashDurationsLen));
 
     // Go to the initial position of the motor
     driveIn();
