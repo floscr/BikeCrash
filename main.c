@@ -25,9 +25,9 @@ int getNextDuration() {
 void setup() {
   Serial.begin(9600);      // Tells the arduin to print the output to the
 
-  pinMode(ENA,OUTPUT);
-  pinMode(IN1,OUTPUT);
-  pinMode(IN2,OUTPUT);
+  pinMode(ENA, OUTPUT);
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
 
   digitalWrite(ENA, HIGH);
 }
@@ -37,14 +37,14 @@ void stopDrive() {
 }
 
 void driveIn() {
-  digitalWrite(IN1,HIGH);
-  digitalWrite(IN2,LOW);
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
 }
 
 void driveOut() {
   digitalWrite(ENA, HIGH);
-  digitalWrite(IN1,LOW);
-  digitalWrite(IN2,HIGH);
+  digitalWrite(IN1, LOW);
+  digitalWrite(IN2, HIGH);
 }
 
 int driveOutTime = 22000;
