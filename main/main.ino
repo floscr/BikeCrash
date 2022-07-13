@@ -10,21 +10,21 @@ const int IN2 = 5;
 const int DRIVE_IN_DURATION = 32000;
 
 // Time out before the crash
-int afterStopDurations[] = { 1000, 1000, 5000, 2000, 5000, 1000, };
+long int afterStopDurations[] = { 1000, 1000, 5000, 2000, 5000, 1000, };
 int afterStopDurationsLen = sizeof afterStopDurations / sizeof afterStopDurations[0];
 int afterStopIndex = -1;
 
 // Time out after the crash
-int afterCrashDurations[] = { 1000, 1000, 5000, 2000, 5000, 1000, };
+long int afterCrashDurations[] = { 1000, 1000, 5000, 2000, 5000, 1000, };
 int afterCrashDurationsLen = sizeof afterCrashDurations / sizeof afterCrashDurations[0];
 int afterCrashIndex = -1;
 
 // Time out before driving out motor again
-int afterStartDurations[] = { 1000, 1000, 5000, 2000, 5000, 1000, };
+long int afterStartDurations[] = { 1000, 1000, 5000, 2000, 5000, 1000, };
 int afterStartDurationsLen = sizeof afterStartDurations / sizeof afterStartDurations[0];
 int afterStartIndex = -1;
 
-int getNextDuration(int *index, int durations[], int len) {
+int getNextDuration(int *index, long int durations[], int len) {
   if (*index >= len - 1) {
     *index = 0;
   } else {
